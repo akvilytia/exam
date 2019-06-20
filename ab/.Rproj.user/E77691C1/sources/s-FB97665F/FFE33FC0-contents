@@ -1,0 +1,131 @@
+plot(ChickWeight)
+model <- lm(weight ~ Time, ChickWeight)
+with(ChickWeight, plot(Time, weight), type="n")
+abline(model, lwd=3, col=2)
+example(points)
+
+
+install.packages("ggplot2")
+library(ggplot2)
+
+ggplot(mpg, aes(hwy, cty)) +
+  geom_point(aes(color=cyl)) +
+  geom_smooth(method = "lm") +
+  coord_cartesian() +
+  scale_color_gradient() +
+  theme_bw()
+
+ggplot(mpg) +
+  geom_point(aes(displ, cty, color=drv))
+
+ggplot(mpg, aes(displ, cty)) +
+  geom_point(aes(color=drv)) +
+  geom_smooth(aes(color=drv))
+
+ggplot(mpg, aes(cty)) +
+  geom_histogram(aes(fill=drv))
+
+ggplot(mpg, aes(displ, cty)) +
+  geom_point()+
+  facet_grid(~ drv)
+ggplot(mpg, aes(cty)) +
+  geom_density(aes(col=drv))
+
+
+df <- data.frame(x=1:100, y=rnorm(100))
+df[50,2] <- 100
+with(df, plot(x, y, type = "l", ylim=c(-4,4)))
+
+ggplot(df, aes(x=x, y=y))+
+  geom_line() +
+  scale_y_continuous(limits = c(-4,4))
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+install.packages("eurostat")
+library(eurostat)
+namq_10_gdp <- get_eurostat("namq_10_gdp", stringsAsFactors = F)
+
+install.packages("dplyr")
+library(dplyr)
+df <- filter(namq_10_gdp, 
+             geo=="LT"|geo=="LV" | geo=="EE", 
+             s_adj=="SCA",
+             time>= "2004-01-01", 
+             na_item=="B1GQ",
+             unit=="CLV_I10")
+
+install.packages("ggplot2")
+library(ggplot2)
+ggplot(df, aes(x=time, y=values))+
+  geom_line(aes(col=geo)) +
+  scale_x_date(breaks = "1 year", date_labels = "%Y") +
+  labs(x="Time",
+       y="Index", 
+       title="Real GDP in Lithuania, Latvia, Estonia, index 2010=10", 
+       subtitle = "Source:Eurostat(namq_10_gdp). Calculation: Lithuanian-Economy.net")
+
+
+
+
+
+
+library(eurostat)
+duom <- get_eurostat("gov_10a_exp", stringsAsFactors = FALSE)
+library(dplyr)
+df<- duom %>% filter (
+  geo %in% c("BE", "BG","CZ","DK",
+                   "DE","EE","IE","EL",
+                   "ES","FR","HR","IT","CY",
+                   "LV","LT","LU","HU","MT",
+                   "NL","AT","PL","PT","RO",
+                   "SI","SK","FI","SE","UK"),
+            sector=="S13",
+            time=="2017-01-01",
+            na_item=="TE",
+            cofog99=="GF02",
+            unit=="PC_GDP"
+            )
+
+library(ggplot2)
+ggplot(df, aes(x = reorder(geo, values), y = values))+
+  geom_bar(stat="identity",
+           fill=" steelblue")+
+  geom_text(aes(label=values), vjust=-0.3)+
+  labs(x="Countries",
+       y="As % of GDP",
+       title="Total general government expenditure on defence, 2016(% of GDP",
+       subtitle = "Source: Eurostat(gov_10a_exp). Calculations: Lithuanian-Economy.net")
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

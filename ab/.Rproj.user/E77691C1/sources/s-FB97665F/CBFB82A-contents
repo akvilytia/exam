@@ -1,0 +1,45 @@
+plot(ChickWeight)
+example(points)
+
+model <- lm(weight~Time,ChickWeight)
+summary(model)
+model
+?Devices
+install.packages("ggplot2")
+library(ggplot2)
+
+
+ggplot(mpg)+
+  geom_point(aes(displ,hwy, color="red"))
+
+ggplot(mpg,aes(displ,hwy))+
+  geom_point(aes(color=drv))+
+  geom_smooth()
+
+ggplot(mpg,aes(hwy))+
+  geom_histogram(binwidth=2, aes(fill=drv))
+
+ggplot(mpg,aes(displ,hwy))+
+  geom_point()+
+  facet_grid(~ drv)
+
+ggplot(mpg,aes(hwy))+
+  geom_density(aes(col=drv))
+
+df <- data.frame(x=1:100, y=rnorm(100))
+df[50,2] <- 100
+with(df,plot(x,y,type="l",ylim=c(-4,4)))
+
+ggplot(df,aes(x=x,y=y))+
+  geom_line()+
+  scale_y_continuous(limits = c(-4,4))
+
+ggplot(df,aes(x=x,y=y))+
+  geom_line()+
+  coord_cartesian(ylim=c(-4,4))
+
+
+ggplot(df,aes(x,y))+theme_bw()+
+  geom_line()+
+  labs(x="Laikotarpis", y="Įvertis", title="Vidutinė grąža",
+       subtitle = "Šaltinis Eurostat(nama_101_q)")
